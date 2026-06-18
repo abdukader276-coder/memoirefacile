@@ -1,36 +1,18 @@
-# MémoireFacile (AI Student Assistant)
+# MemoireFacile
 
-MémoireFacile est une application web basée sur l’intelligence artificielle qui aide les étudiants à réussir leurs études.
+MemoireFacile est une application web autonome pour les etudiants et jeunes professionnels francophones.
 
-## 🚀 Fonctionnalités
+## Publication sur GitHub Pages
 
-- Génération automatique de PowerPoint à partir de documents
-- Création de QCM interactifs
-- Résumé intelligent de cours et mémoires
-- Génération de questions d’examen
-- Préparation de soutenance (script + questions du jury)
-- Génération de CV et lettres de motivation
+1. Creez un nouveau repository GitHub.
+2. Envoyez les fichiers de ce dossier dans le repository.
+3. Allez dans Settings > Pages.
+4. Source : Deploy from a branch.
+5. Branch : main, dossier : /root.
+6. Cliquez sur Save.
 
-## 🎯 Objectif
+GitHub donnera ensuite une adresse publique pour ouvrir l'application.
 
-Aider les étudiants à transformer leurs cours en outils de révision et de présentation pour améliorer leurs résultats académiques.
+## Fichier principal
 
-## 💡 Technologies
-
-- HTML / CSS / JavaScript
-- IA (OpenAI / Codex compatible)
-- Application web statique
-
-## 🌍 Public cible
-
-- Étudiants universitaires
-- Lycéens
-- Jeunes professionnels
-
-## 📦 Statut
-
-Version MVP (prototype en développement)
-
----
-
-Créé pour simplifier la réussite académique grâce à l’IA.
+Le fichier `index.html` contient toute l'application.

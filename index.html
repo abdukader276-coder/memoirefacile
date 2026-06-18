@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MémoireFacile</title>
+  <style>
+    :root {
+      --blue: #155eef;
+      --blue-2: #0b3b8f;
+      --ink: #172033;
+      --muted: #64748b;
+      --line: #d8e1ee;
+      --soft: #f3f7fb;
+      --white: #ffffff;
+      --green: #138a5b;
+      --amber: #b7791f;
+      --red: #c24141;
+      --shadow: 0 16px 40px rgba(16, 24, 40, .08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--soft);
+      min-height: 100vh;
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 284px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      background: var(--white);
+      border-right: 1px solid var(--line);
+      padding: 24px 18px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .mark {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      background: var(--blue);
+      border-radius: 8px;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      background: transparent;
+      color: var(--ink);
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background: #eaf1ff;
+      color: var(--blue-2);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #e7f6ef;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .plan-box {
+      margin-top: 22px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+    }
+
+    .plan-box h2 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .plan-box p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    main {
+      padding: 26px;
+      display: grid;
+      gap: 20px;
+      align-content: start;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .topbar h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 38px);
+      letter-spacing: 0;
+    }
+
+    .topbar p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: var(--blue);
+      color: var(--white);
+      font-weight: 750;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn.secondary {
+      background: var(--white);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .btn.ghost {
+      background: #edf4ff;
+      color: var(--blue-2);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr);
+      gap: 20px;
+    }
+
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-head {
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .panel-head h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .panel-body {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .upload {
+      min-height: 156px;
+      border: 1px dashed #9bb5db;
+      border-radius: 8px;
+      background: #f8fbff;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 18px;
+    }
+
+    .upload strong { display: block; margin-bottom: 8px; }
+    .upload span { color: var(--muted); font-size: 14px; }
+
+    textarea, input, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      padding: 12px;
+      color: var(--ink);
+      outline: none;
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(21, 94, 239, .12);
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .quick {
+      min-height: 86px;
+      text-align: left;
+      padding: 14px;
+      border-radius: 8px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .quick b {
+      font-size: 14px;
+    }
+
+    .quick small {
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .quick:hover {
+      border-color: #93b7ff;
+      box-shadow: var(--shadow);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+    }
+
+    .stat b {
+      display: block;
+      font-size: 24px;
+      color: var(--blue-2);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      background: #eef4fb;
+      border-radius: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      min-height: 34px;
+      padding: 7px 11px;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .tab.active {
+      background: var(--white);
+      color: var(--blue-2);
+      box-shadow: 0 1px 6px rgba(16, 24, 40, .08);
+    }
+
+    .result {
+      min-height: 360px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      overflow: auto;
+      line-height: 1.55;
+    }
+
+    .result h4 {
+      margin: 18px 0 8px;
+      font-size: 18px;
+    }
+
+    .result h4:first-child { margin-top: 0; }
+    .result ul, .result ol { padding-left: 22px; }
+    .result li { margin: 6px 0; }
+
+    .slide-deck {
+      display: grid;
+      gap: 12px;
+    }
+
+    .slide {
+      aspect-ratio: 16 / 9;
+      border-radius: 8px;
+      border: 1px solid #c9d7ea;
+      padding: 22px;
+      background: linear-gradient(135deg, #ffffff 0%, #f4f8ff 70%);
+      display: grid;
+      align-content: center;
+      gap: 12px;
+      page-break-after: always;
+    }
+
+    .slide h4 {
+      color: var(--blue-2);
+      font-size: 26px;
+      margin: 0;
+    }
+
+    .slide p {
+      margin: 0;
+      color: var(--ink);
+      max-width: 86%;
+    }
+
+    .quiz-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .choice {
+      display: block;
+      width: 100%;
+      min-height: 40px;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      color: var(--ink);
+      text-align: left;
+    }
+
+    .choice.correct { border-color: var(--green); background: #ecfdf5; }
+    .choice.wrong { border-color: var(--red); background: #fff1f1; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .assistant {
+      display: grid;
+      gap: 10px;
+    }
+
+    .chat {
+      min-height: 170px;
+      max-height: 260px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: #fbfdff;
+    }
+
+    .message {
+      margin: 0 0 10px;
+      padding: 10px;
+      border-radius: 8px;
+      max-width: 92%;
+      line-height: 1.45;
+    }
+
+    .message.user {
+      margin-left: auto;
+      background: #eaf1ff;
+    }
+
+    .message.ai {
+      background: var(--white);
+      border: 1px solid var(--line);
+    }
+
+    .pay-steps {
+      display: grid;
+      gap: 10px;
+    }
+
+    .step {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+    }
+
+    .step b {
+      color: var(--blue-2);
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 1050px) {
+      .app { grid-template-columns: 1fr; }
+      aside { position: static; height: auto; }
+      .grid { grid-template-columns: 1fr; }
+      .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      main { padding: 16px; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .actions { justify-content: flex-start; }
+      .quick-grid, .stats, .form-grid { grid-template-columns: 1fr; }
+      .panel-head { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media print {
+      body { background: white; }
+      aside, .topbar, .panel:not(.printable), .tabs, .actions, .panel-head button { display: none !important; }
+      .app, main { display: block; padding: 0; }
+      .panel, .result { box-shadow: none; border: 0; }
+      .printable { display: block !important; }
+      .slide { width: 100vw; height: 56.25vw; border: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <div class="mark">MF</div>
+        <div>
+          <h1>MémoireFacile</h1>
+          <p>Études, travail, orientation</p>
+        </div>
+      </div>
+      <nav id="nav">
+        <button class="nav-btn active" data-section="dashboard">⌂ Dashboard</button>
+        <button class="nav-btn" data-section="studies">▣ Module études</button>
+        <button class="nav-btn" data-section="career">◆ CV & carrière</button>
+        <button class="nav-btn" data-section="orientation">◎ Orientation</button>
+        <button class="nav-btn" data-section="premium">★ Premium</button>
+      </nav>
+      <div class="plan-box">
+        <h2>Mode actuel <span class="badge" id="planBadge">Gratuit</span></h2>
+        <p>Le mode gratuit permet 1 document par jour et les résultats essentiels.</p>
+        <button class="btn ghost" data-section="premium">Activer Premium</button>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <h2>Réussir plus vite avec l’IA</h2>
+          <p>Importez un cours, mémoire, rapport ou profil. MémoireFacile transforme le contenu en supports d’étude, soutenance, candidature et orientation.</p>
+        </div>
+        <div class="actions">
+          <button class="btn secondary" id="copyResult">Copier</button>
+          <button class="btn secondary" id="downloadText">Télécharger texte</button>
+          <button class="btn secondary" id="downloadPptx">Télécharger PPTX</button>
+          <button class="btn" id="printResult">Exporter PDF</button>
+        </div>
+      </header>
+
+      <section class="grid section" id="dashboard">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Upload document</h3>
+            <span class="badge" id="docStatus">Aucun document</span>
+          </div>
+          <div class="panel-body">
+            <label class="upload">
+              <input class="hidden" id="fileInput" type="file" accept=".txt,.pdf,.docx,.doc" />
+              <span>
+                <strong>Cliquez pour importer PDF, Word ou texte</strong>
+                Les PDF/DOCX sont préparés pour l’import. Le texte collé fonctionne immédiatement.
+              </span>
+            </label>
+            <textarea id="sourceText" placeholder="Collez ici votre cours, mémoire, rapport, profil ou sujet..."></textarea>
+            <button class="btn" id="analyzeBtn">Analyser le contenu</button>
+            <div class="stats">
+              <div class="stat"><b id="wordCount">0</b><span>mots</span></div>
+              <div class="stat"><b id="keyCount">0</b><span>points clés</span></div>
+              <div class="stat"><b id="readTime">0</b><span>min lecture</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Assistant IA global</h3>
+            <span class="badge">Études → Travail → Orientation</span>
+          </div>
+          <div class="panel-body assistant">
+            <div class="chat" id="chat">
+              <p class="message ai">Bonjour. Importez un document ou posez une question : je peux aider pour un examen, une soutenance, un CV, une lettre ou un choix d’université.</p>
+            </div>
+            <input id="chatInput" placeholder="Votre question..." />
+            <button class="btn" id="askBtn">Demander à l’assistant</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel section hidden" id="studies">
+        <div class="panel-head">
+          <h3>Module études</h3>
+          <span class="badge">Core</span>
+        </div>
+        <div class="panel-body">
+          <div class="quick-grid">
+            <button class="quick" data-action="ppt"><b>Générer PowerPoint</b><small>8 slides prêtes pour la soutenance</small></button>
+            <button class="quick" data-action="quiz"><b>Créer QCM</b><small>Quiz interactif avec score</small></button>
+            <button class="quick" data-action="summary"><b>Résumer document</b><small>Court, détaillé, points clés</small></button>
+            <button class="quick" data-action="exam"><b>Questions d’examen</b><small>Questions probables et réponses</small></button>
+            <button class="quick" data-action="defense"><b>Préparer soutenance</b><small>Script oral, jury, conseils</small></button>
+            <button class="quick" data-action="recommend"><b>Recommandations</b><small>Améliorations concrètes</small></button>
+            <button class="quick" data-action="method"><b>Méthodologie</b><small>Plan académique structuré</small></button>
+            <button class="quick" data-action="copy"><b>Texte copiable</b><small>Sortie simple à réutiliser</small></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel section hidden" id="career">
+        <div class="panel-head">
+          <h3>CV & carrière</h3>
+          <span class="badge">Travail</span>
+        </div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <input id="fullName" placeholder="Nom complet" />
+            <input id="targetRole" placeholder="Poste visé ou domaine" />
+            <input id="education" placeholder="Formation" />
+            <input id="experience" placeholder="Expériences principales" />
+          </div>
+          <textarea id="profileText" placeholder="Compétences, projets, langues, objectifs professionnels..."></textarea>
+          <div class="quick-grid">
+            <button class="quick" data-action="cvAcademic"><b>CV académique</b><small>Formation, recherche, projets</small></button>
+            <button class="quick" data-action="cvPro"><b>CV professionnel</b><small>Compétences, expériences, impact</small></button>
+            <button class="quick" data-action="letter"><b>Lettre de motivation</b><small>Personnalisée selon le poste</small></button>
+            <button class="quick" data-action="interview"><b>Simulation entretien</b><small>Questions, modèles, feedback</small></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel section hidden" id="orientation">
+        <div class="panel-head">
+          <h3>Orientation</h3>
+          <span class="badge">Afrique + international</span>
+        </div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <input id="country" placeholder="Pays souhaité" />
+            <input id="budget" placeholder="Budget annuel" />
+            <input id="field" placeholder="Domaine d’étude" />
+            <select id="level">
+              <option>Licence</option>
+              <option>Master</option>
+              <option>Doctorat</option>
+              <option>Formation professionnelle</option>
+            </select>
+          </div>
+          <textarea id="orientationProfile" placeholder="Profil, notes, langues, centres d’intérêt, objectifs..."></textarea>
+          <div class="quick-grid">
+            <button class="quick" data-action="jobs"><b>Métiers</b><small>Débouchés et compétences</small></button>
+            <button class="quick" data-action="universities"><b>Universités</b><small>Admission, langues, bourses</small></button>
+            <button class="quick" data-action="path"><b>Plan d’action</b><small>Étapes claires sur 90 jours</small></button>
+            <button class="quick" data-action="skills"><b>Compétences</b><small>Priorités à développer</small></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel section hidden" id="premium">
+        <div class="panel-head">
+          <h3>Premium & activation</h3>
+          <span class="badge">Paiement manuel adapté Comores</span>
+        </div>
+        <div class="panel-body">
+          <div class="pay-steps">
+            <div class="step"><b>1.</b><span>L’utilisateur paie par MVola, dépôt bancaire ou transfert mobile.</span></div>
+            <div class="step"><b>2.</b><span>Il envoie la preuve de paiement à l’administrateur.</span></div>
+            <div class="step"><b>3.</b><span>L’administrateur génère un code d’activation.</span></div>
+            <div class="step"><b>4.</b><span>L’utilisateur saisit le code pour débloquer les fonctions premium.</span></div>
+          </div>
+          <div class="form-grid">
+            <input id="proofName" placeholder="Nom de l’utilisateur" />
+            <input id="activationCode" placeholder="Code d’activation" />
+          </div>
+          <div class="actions" style="justify-content:flex-start">
+            <button class="btn secondary" id="generateCode">Générer code admin</button>
+            <button class="btn" id="activatePremium">Activer compte</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel printable">
+        <div class="panel-head">
+          <h3>Résultat</h3>
+          <div class="tabs">
+            <button class="tab active" data-view="preview">Aperçu</button>
+            <button class="tab" data-view="quiz">Quiz</button>
+            <button class="tab" data-view="slides">Slides</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="result" id="result"><h4>Prêt à travailler</h4><p>Collez ou importez un contenu, puis cliquez sur une action. Les résultats apparaîtront ici avec une structure claire et directement réutilisable.</p></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const state = {
+      text: "",
+      keywords: [],
+      resultHtml: "",
+      quiz: [],
+      premium: localStorage.getItem("mfPremium") === "true"
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const clean = (value) => (value || "").replace(/\s+/g, " ").trim();
+
+    function getText() {
+      const source = clean($("sourceText").value);
+      const profile = clean([$("fullName").value, $("targetRole").value, $("education").value, $("experience").value, $("profileText").value].join(" "));
+      const orientation = clean([$("country").value, $("budget").value, $("field").value, $("level").value, $("orientationProfile").value].join(" "));
+      return clean([source, profile, orientation].join(" ")) || "Sujet : réussite académique, examen, soutenance, carrière professionnelle et orientation internationale.";
+    }
+
+    function analyze() {
+      state.text = getText();
+      const words = state.text.split(/\s+/).filter(Boolean);
+      const freq = {};
+      const stop = new Set("avec dans pour par sur une des les aux que qui est sont plus moins cette votre vous nous leur leurs afin entre selon ainsi comme être avoir faire".split(" "));
+      words.forEach((word) => {
+        const raw = word.toLowerCase().replace(/^[ldjcmnts]'|^[ldjcmnts’]/, "").replace(/[^a-z0-9àâäéèêëîïôöùûüç-]/gi, "");
+        const key = raw.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (key.length > 4 && !stop.has(key)) freq[raw] = (freq[raw] || 0) + 1;
+      });
+      state.keywords = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([word]) => word);
+      $("wordCount").textContent = words.length;
+      $("keyCount").textContent = state.keywords.length;
+      $("readTime").textContent = Math.max(1, Math.ceil(words.length / 220));
+      $("docStatus").textContent = words.length > 20 ? "Document analysé" : "Contenu court";
+      renderSummary();
+    }
+
+    function titleFromText() {
+      const first = state.text.split(/[.!?]/)[0] || "Projet académique";
+      return first.slice(0, 78);
+    }
+
+    function keyPoints() {
+      if (!state.keywords.length) analyze();
+      return state.keywords.length ? state.keywords.map((k) => k.charAt(0).toUpperCase() + k.slice(1)) : ["Objectifs", "Méthodologie", "Résultats", "Impact"];
+    }
+
+    function setResult(html) {
+      state.resultHtml = html;
+      $("result").innerHTML = html;
+      activateView("preview");
+    }
+
+    function renderSummary() {
+      const points = keyPoints();
+      setResult(`
+        <h4>Résumé court</h4>
+        <p>${titleFromText()} : le document présente un contenu à structurer pour apprendre, réviser, soutenir ou valoriser un parcours professionnel.</p>
+        <h4>Résumé détaillé</h4>
+        <p>Le contenu est organisé autour de ${points.slice(0, 4).join(", ")}. MémoireFacile propose une lecture synthétique, des questions d’entraînement, des supports de présentation et des conseils pratiques pour transformer l’information en résultat concret.</p>
+        <h4>Points clés structurés</h4>
+        <ul>${points.map((p) => `<li>${p} : notion importante à expliquer, illustrer et mémoriser.</li>`).join("")}</ul>
+      `);
+    }
+
+    function renderSlides() {
+      const points = keyPoints();
+      const slides = buildSlides(points);
+      const html = `<div class="slide-deck">${slides.map(([h, p]) => `<article class="slide"><h4>${h}</h4><p>${p}</p></article>`).join("")}</div>`;
+      setResult(html);
+    }
+
+    function buildSlides(points = keyPoints()) {
+      return [
+        ["Titre", titleFromText()],
+        ["Introduction", "Contexte, intérêt du sujet et annonce du plan."],
+        ["Problématique", `Comment comprendre et exploiter efficacement ${points[0] || "le sujet"} ?`],
+        ["Objectifs", "Identifier les idées essentielles, expliquer les enjeux et proposer une synthèse claire."],
+        ["Méthodologie", "Analyse du document, regroupement des idées, extraction des points clés et reformulation."],
+        ["Résultats", `Les axes dominants sont ${points.slice(0, 4).join(", ")}.`],
+        ["Conclusion", "Le document fournit une base solide pour réviser, présenter et décider des prochaines actions."],
+        ["Recommandations", "Simplifier les messages, ajouter des exemples et préparer les réponses aux questions."]
+      ];
+    }
+
+    function xmlEscape(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" }[char]));
+    }
+
+    function crc32(bytes) {
+      let table = crc32.table;
+      if (!table) {
+        table = crc32.table = Array.from({ length: 256 }, (_, n) => {
+          let c = n;
+          for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+          return c >>> 0;
+        });
+      }
+      let crc = -1;
+      for (const byte of bytes) crc = (crc >>> 8) ^ table[(crc ^ byte) & 0xff];
+      return (crc ^ -1) >>> 0;
+    }
+
+    function makeZip(files) {
+      const encoder = new TextEncoder();
+      const localParts = [];
+      const centralParts = [];
+      let offset = 0;
+      const u16 = (n) => [n & 255, (n >>> 8) & 255];
+      const u32 = (n) => [n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255];
+      const push = (parts, bytes) => parts.push(new Uint8Array(bytes));
+      files.forEach((file) => {
+        const name = encoder.encode(file.name);
+        const data = encoder.encode(file.content);
+        const crc = crc32(data);
+        const local = [
+          ...u32(0x04034b50), ...u16(20), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(crc),
+          ...u32(data.length), ...u32(data.length), ...u16(name.length), ...u16(0), ...name, ...data
+        ];
+        push(localParts, local);
+        const central = [
+          ...u32(0x02014b50), ...u16(20), ...u16(20), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(crc),
+          ...u32(data.length), ...u32(data.length), ...u16(name.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0),
+          ...u32(0), ...u32(offset), ...name
+        ];
+        push(centralParts, central);
+        offset += local.length;
+      });
+      const centralSize = centralParts.reduce((sum, part) => sum + part.length, 0);
+      const end = new Uint8Array([
+        ...u32(0x06054b50), ...u16(0), ...u16(0), ...u16(files.length), ...u16(files.length),
+        ...u32(centralSize), ...u32(offset), ...u16(0)
+      ]);
+      return new Blob([...localParts, ...centralParts, end], { type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
+    }
+
+    function slideXml(title, body) {
+      return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"><p:cSld><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/><a:chOff x="0" y="0"/><a:chExt cx="0" cy="0"/></a:xfrm></p:grpSpPr><p:sp><p:nvSpPr><p:cNvPr id="2" name="Titre"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr><p:spPr><a:xfrm><a:off x="650000" y="850000"/><a:ext cx="7900000" cy="900000"/></a:xfrm></p:spPr><p:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:rPr lang="fr-FR" sz="3200" b="1"><a:solidFill><a:srgbClr val="0B3B8F"/></a:solidFill></a:rPr><a:t>${xmlEscape(title)}</a:t></a:r></a:p></p:txBody></p:sp><p:sp><p:nvSpPr><p:cNvPr id="3" name="Contenu"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr><p:spPr><a:xfrm><a:off x="650000" y="2100000"/><a:ext cx="7900000" cy="2600000"/></a:xfrm></p:spPr><p:txBody><a:bodyPr wrap="square"/><a:lstStyle/><a:p><a:r><a:rPr lang="fr-FR" sz="2100"><a:solidFill><a:srgbClr val="172033"/></a:solidFill></a:rPr><a:t>${xmlEscape(body)}</a:t></a:r></a:p></p:txBody></p:sp></p:spTree></p:cSld><p:clrMapOvr><a:masterClrMapping/></p:clrMapOvr></p:sld>`;
+    }
+
+    function downloadPptx() {
+      analyze();
+      const slides = buildSlides();
+      const files = [
+        { name: "[Content_Types].xml", content: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/ppt/presentation.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml"/>${slides.map((_, i) => `<Override PartName="/ppt/slides/slide${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml"/>`).join("")}</Types>` },
+        { name: "_rels/.rels", content: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="ppt/presentation.xml"/></Relationships>` },
+        { name: "ppt/presentation.xml", content: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><p:presentation xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"><p:sldIdLst>${slides.map((_, i) => `<p:sldId id="${256 + i}" r:id="rId${i + 1}"/>`).join("")}</p:sldIdLst><p:sldSz cx="9144000" cy="5143500" type="screen16x9"/><p:notesSz cx="6858000" cy="9144000"/></p:presentation>` },
+        { name: "ppt/_rels/presentation.xml.rels", content: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${slides.map((_, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/slide${i + 1}.xml"/>`).join("")}</Relationships>` },
+        ...slides.map(([title, body], i) => ({ name: `ppt/slides/slide${i + 1}.xml`, content: slideXml(title, body) }))
+      ];
+      const blob = makeZip(files);
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "memoirefacile-presentation.pptx";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function renderQuiz() {
+      const points = keyPoints();
+      state.quiz = points.slice(0, 5).map((p, index) => ({
+        q: `Quelle affirmation décrit le mieux l’importance de ${p} ?`,
+        a: [`Un point central à expliquer clairement`, `Un détail à ignorer`, `Une contrainte sans rapport`, `Un élément uniquement administratif`],
+        correct: 0,
+        exp: `${p} ressort comme un thème important du contenu analysé.`
+      }));
+      const html = state.quiz.map((item, i) => `
+        <div class="quiz-card">
+          <b>Question ${i + 1}. ${item.q}</b>
+          ${item.a.map((choice, c) => `<button class="choice" data-q="${i}" data-c="${c}">${String.fromCharCode(65 + c)}. ${choice}</button>`).join("")}
+          <p id="explain-${i}"></p>
+        </div>
+      `).join("") + `<p><b id="score">Score : 0 / ${state.quiz.length}</b></p>`;
+      setResult(html);
+      activateView("quiz");
+    }
+
+    function renderExam() {
+      const points = keyPoints();
+      setResult(`
+        <h4>Questions probables d’examen</h4>
+        <ol>${points.slice(0, 6).map((p) => `<li>Expliquez le rôle de ${p} dans le document.</li>`).join("")}</ol>
+        <h4>Réponses modèles</h4>
+        <ul>${points.slice(0, 4).map((p) => `<li>${p} doit être défini, relié au contexte, illustré par un exemple et conclu par son impact.</li>`).join("")}</ul>
+      `);
+    }
+
+    function renderDefense() {
+      setResult(`
+        <h4>Script oral de 5 minutes</h4>
+        <p>Bonjour. Je vais présenter le sujet suivant : ${titleFromText()}. Mon intervention commence par le contexte, puis la problématique, les objectifs, la méthode, les résultats et enfin les recommandations.</p>
+        <h4>Plan de présentation</h4>
+        <ol><li>Contexte et intérêt</li><li>Problématique</li><li>Objectifs</li><li>Méthodologie</li><li>Résultats</li><li>Conclusion</li></ol>
+        <h4>Questions possibles du jury</h4>
+        <ul><li>Pourquoi avoir choisi ce sujet ?</li><li>Quelle est la limite principale de votre travail ?</li><li>Comment appliquer vos recommandations ?</li></ul>
+        <h4>Réponses suggérées</h4>
+        <p>Répondez avec une phrase courte, un exemple précis et un lien direct avec votre objectif de départ.</p>
+      `);
+    }
+
+    function renderCareer(type) {
+      const name = clean($("fullName").value) || "Nom Prénom";
+      const role = clean($("targetRole").value) || "poste visé";
+      const edu = clean($("education").value) || "formation académique";
+      const exp = clean($("experience").value) || "expériences et projets";
+      if (type === "letter") {
+        setResult(`<h4>Lettre de motivation</h4><p>Madame, Monsieur,</p><p>Je souhaite présenter ma candidature pour le poste de ${role}. Mon parcours en ${edu}, renforcé par ${exp}, m’a permis de développer une méthode de travail sérieuse, une capacité d’apprentissage rapide et une orientation résultats.</p><p>Je serais heureux de mettre mes compétences au service de votre organisation et de contribuer activement à vos objectifs.</p><p>Cordialement,<br>${name}</p>`);
+        return;
+      }
+      if (type === "interview") {
+        setResult(`<h4>Simulation entretien</h4><ol><li>Présentez-vous en une minute.</li><li>Pourquoi ce poste vous intéresse-t-il ?</li><li>Quelle expérience prouve votre sérieux ?</li><li>Comment gérez-vous une difficulté ?</li></ol><h4>Feedback conseillé</h4><p>Répondez avec la méthode Situation, Action, Résultat. Soyez concret, bref et positif.</p>`);
+        return;
+      }
+      setResult(`<h4>${type === "cvAcademic" ? "CV académique" : "CV professionnel"}</h4><p><b>${name}</b><br>${role}</p><h4>Profil</h4><p>Candidat motivé, orienté apprentissage et résultats, avec une base solide en ${edu}.</p><h4>Formation</h4><p>${edu}</p><h4>Expériences</h4><p>${exp}</p><h4>Compétences</h4><ul><li>Analyse et synthèse</li><li>Communication orale et écrite</li><li>Organisation</li><li>Travail en équipe</li></ul>`);
+    }
+
+    function renderOrientation(type) {
+      const country = clean($("country").value) || "pays ciblé";
+      const field = clean($("field").value) || "domaine choisi";
+      const level = $("level").value;
+      if (type === "universities") {
+        setResult(`<h4>Universités adaptées</h4><ul><li>Université publique dans ${country} : option économique, dossier académique solide demandé.</li><li>Université privée reconnue : admission plus flexible, frais plus élevés.</li><li>Programme avec bourse : priorité aux bons relevés, projet clair et niveau linguistique vérifiable.</li></ul><h4>Conditions d’admission</h4><p>Niveau ${level}, relevés de notes, passeport, lettre de motivation, CV et preuve de langue selon le pays.</p><h4>Bourses possibles</h4><p>Bourses gouvernementales, bourses d’excellence, aides universitaires et programmes de coopération.</p>`);
+        return;
+      }
+      if (type === "jobs") {
+        setResult(`<h4>Métiers suggérés</h4><ul><li>Assistant ou chargé de projet en ${field}</li><li>Analyste junior</li><li>Consultant débutant</li><li>Formateur ou coordinateur académique</li></ul><h4>Compétences nécessaires</h4><p>Communication, outils numériques, analyse de données, rédaction professionnelle et anglais ou français académique selon la destination.</p>`);
+        return;
+      }
+      setResult(`<h4>Plan d’action orientation</h4><ol><li>Clarifier le domaine : ${field}</li><li>Choisir 3 pays et comparer budget, langue, visa.</li><li>Préparer CV, lettre, relevés et passeport.</li><li>Contacter les universités et chercher les bourses.</li></ol>`);
+    }
+
+    function renderAdvice(action) {
+      setResult(`<h4>${action === "method" ? "Méthodologie" : "Recommandations"}</h4><ul><li>Commencez par une problématique simple et précise.</li><li>Gardez une idée principale par slide ou par paragraphe.</li><li>Ajoutez des exemples locaux ou professionnels.</li><li>Préparez trois réponses fortes pour le jury ou l’entretien.</li><li>Terminez avec une action claire et réaliste.</li></ul>`);
+    }
+
+    function askAssistant() {
+      const question = clean($("chatInput").value);
+      if (!question) return;
+      $("chat").insertAdjacentHTML("beforeend", `<p class="message user">${question}</p>`);
+      const answer = `Voici une réponse adaptée : commencez par clarifier l’objectif, utilisez les points clés du document (${keyPoints().slice(0, 3).join(", ")}), puis transformez-les en actions concrètes. Pour un examen, révisez par questions. Pour une soutenance, préparez un plan court. Pour la carrière, valorisez vos résultats.`;
+      $("chat").insertAdjacentHTML("beforeend", `<p class="message ai">${answer}</p>`);
+      $("chatInput").value = "";
+      $("chat").scrollTop = $("chat").scrollHeight;
+    }
+
+    function activateView(view) {
+      document.querySelectorAll(".tab").forEach((btn) => btn.classList.toggle("active", btn.dataset.view === view));
+    }
+
+    document.querySelectorAll("[data-section]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.section;
+        document.querySelectorAll(".section").forEach((section) => section.classList.add("hidden"));
+        $(id).classList.remove("hidden");
+        document.querySelectorAll(".nav-btn").forEach((nav) => nav.classList.toggle("active", nav.dataset.section === id));
+      });
+    });
+
+    document.querySelectorAll("[data-action]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        analyze();
+        const action = btn.dataset.action;
+        if (action === "ppt") renderSlides();
+        else if (action === "quiz") renderQuiz();
+        else if (action === "summary" || action === "copy") renderSummary();
+        else if (action === "exam") renderExam();
+        else if (action === "defense") renderDefense();
+        else if (["cvAcademic", "cvPro", "letter", "interview"].includes(action)) renderCareer(action);
+        else if (["jobs", "universities", "path", "skills"].includes(action)) renderOrientation(action);
+        else renderAdvice(action);
+      });
+    });
+
+    $("fileInput").addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (file.type === "text/plain" || file.name.endsWith(".txt")) {
+        $("sourceText").value = await file.text();
+      } else {
+        $("sourceText").value = `Document importé : ${file.name}. Pour cette version locale sans serveur, collez le texte extrait ici afin de lancer l’analyse complète.`;
+      }
+      analyze();
+    });
+
+    $("analyzeBtn").addEventListener("click", analyze);
+    $("askBtn").addEventListener("click", askAssistant);
+    $("chatInput").addEventListener("keydown", (e) => { if (e.key === "Enter") askAssistant(); });
+    $("printResult").addEventListener("click", () => window.print());
+    $("copyResult").addEventListener("click", async () => navigator.clipboard.writeText($("result").innerText));
+    $("downloadText").addEventListener("click", () => {
+      const blob = new Blob([$("result").innerText], { type: "text/plain;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "memoirefacile-resultat.txt";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+    $("downloadPptx").addEventListener("click", downloadPptx);
+
+    $("generateCode").addEventListener("click", () => {
+      const name = clean($("proofName").value) || "USER";
+      $("activationCode").value = `MF-${name.slice(0, 3).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+    });
+
+    $("activatePremium").addEventListener("click", () => {
+      if ($("activationCode").value.startsWith("MF-")) {
+        localStorage.setItem("mfPremium", "true");
+        $("planBadge").textContent = "Premium";
+        alert("Compte Premium activé.");
+      } else {
+        alert("Code invalide. Utilisez un code commençant par MF-.");
+      }
+    });
+
+    $("result").addEventListener("click", (event) => {
+      const choice = event.target.closest(".choice");
+      if (!choice) return;
+      const q = Number(choice.dataset.q);
+      const c = Number(choice.dataset.c);
+      const item = state.quiz[q];
+      choice.parentElement.querySelectorAll(".choice").forEach((btn) => btn.disabled = true);
+      choice.classList.add(c === item.correct ? "correct" : "wrong");
+      choice.parentElement.querySelector(`[data-c="${item.correct}"]`).classList.add("correct");
+      $(`explain-${q}`).textContent = item.exp;
+      const correct = document.querySelectorAll(".choice.correct[data-c='0']").length;
+      $("score").textContent = `Score : ${correct} / ${state.quiz.length}`;
+    });
+
+    document.querySelectorAll(".tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        if (tab.dataset.view === "slides") renderSlides();
+        if (tab.dataset.view === "quiz") renderQuiz();
+        if (tab.dataset.view === "preview") setResult(state.resultHtml || $("result").innerHTML);
+      });
+    });
+
+    if (state.premium) $("planBadge").textContent = "Premium";
+  </script>
+</body>
+</html>
