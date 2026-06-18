@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MémoireFacile</title>
+  <style>
+    :root{--blue:#155eef;--dark:#172033;--muted:#667085;--soft:#f3f7fb;--line:#d8e1ee;--white:#fff;--green:#138a5b}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--dark);background:var(--soft)}
+    .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}.side{background:var(--white);border-right:1px solid var(--line);padding:24px;position:sticky;top:0;height:100vh}
+    .brand{display:flex;gap:12px;align-items:center;margin-bottom:22px}.logo{width:44px;height:44px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:800}.brand h1{font-size:22px;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
+    nav{display:grid;gap:8px}.nav{border:0;background:transparent;text-align:left;border-radius:8px;padding:12px;font-weight:700;color:var(--dark);cursor:pointer}.nav.active,.nav:hover{background:#eaf1ff;color:#0b3b8f}
+    .plan{margin-top:22px;border:1px solid var(--line);border-radius:8px;padding:14px;background:#fbfdff}.badge{display:inline-flex;background:#e7f6ef;color:var(--green);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:800}
+    main{padding:26px;display:grid;gap:18px}.top{display:flex;justify-content:space-between;gap:14px;align-items:start}.top h2{margin:0;font-size:34px}.top p{margin:6px 0 0;color:var(--muted);max-width:780px;line-height:1.5}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;border-radius:8px;background:var(--blue);color:#fff;padding:11px 14px;font-weight:800;cursor:pointer}.btn.secondary{background:#fff;color:var(--dark);border:1px solid var(--line)}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 16px 38px rgba(16,24,40,.08)}.head{padding:17px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}.head h3{margin:0}.body{padding:17px;display:grid;gap:14px}
+    textarea,input,select{width:100%;border:1px solid var(--line);border-radius:8px;padding:12px;font:inherit}textarea{min-height:150px;resize:vertical}.upload{border:1px dashed #9bb5db;border-radius:8px;background:#f8fbff;min-height:130px;display:grid;place-items:center;text-align:center;padding:18px;color:var(--muted)}
+    .quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.cardbtn{min-height:86px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px;cursor:pointer}.cardbtn:hover{border-color:#93b7ff}.cardbtn b{display:block}.cardbtn small{color:var(--muted)}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fbfdff}.stat b{font-size:24px;color:#0b3b8f}.stat span{display:block;color:var(--muted);font-size:13px}
+    .result{min-height:360px;border:1px solid var(--line);border-radius:8px;padding:18px;line-height:1.55;overflow:auto}.result h4{margin:18px 0 8px;font-size:18px}.result h4:first-child{margin-top:0}
+    .slide{aspect-ratio:16/9;border:1px solid #c9d7ea;border-radius:8px;padding:24px;margin-bottom:12px;background:linear-gradient(135deg,#fff,#f4f8ff);display:grid;align-content:center}.slide h4{margin:0 0 10px;color:#0b3b8f;font-size:27px}.choice{display:block;width:100%;margin:8px 0;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fbfdff;text-align:left}.correct{border-color:#138a5b;background:#ecfdf5}.wrong{border-color:#c24141;background:#fff1f1}
+    .section.hidden{display:none}.chat{min-height:170px;max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:8px;background:#fbfdff;padding:12px}.msg{padding:10px;border-radius:8px;margin:0 0 10px;background:#fff;border:1px solid var(--line)}.msg.user{background:#eaf1ff;margin-left:auto;max-width:90%}
+    @media(max-width:1000px){.app{grid-template-columns:1fr}.side{position:static;height:auto}.grid{grid-template-columns:1fr}.quick{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){main{padding:16px}.top{display:grid}.quick,.stats{grid-template-columns:1fr}}
+    @media print{.side,.top,.section:not(.printable),.head .actions{display:none}.app,main{display:block;padding:0}.panel{box-shadow:none;border:0}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="side">
+      <div class="brand"><div class="logo">MF</div><div><h1>MémoireFacile</h1><p>Études, travail, orientation</p></div></div>
+      <nav>
+        <button class="nav active" data-show="dashboard">Dashboard</button>
+        <button class="nav" data-show="studies">Module études</button>
+        <button class="nav" data-show="career">CV & carrière</button>
+        <button class="nav" data-show="orientation">Orientation</button>
+        <button class="nav" data-show="premium">Premium</button>
+      </nav>
+      <div class="plan"><b>Mode actuel</b> <span class="badge" id="plan">Gratuit</span><p>Gratuit : 1 document par jour. Premium : accès complet avec code d’activation.</p></div>
+    </aside>
+    <main>
+      <header class="top">
+        <div><h2>Réussir plus vite avec l’IA</h2><p>Importez ou collez un document. MémoireFacile génère résumés, PowerPoint, QCM, soutenance, CV, lettres et orientation.</p></div>
+        <div class="actions"><button class="btn secondary" id="copy">Copier</button><button class="btn secondary" id="txt">Texte</button><button class="btn secondary" id="pptx">PPTX</button><button class="btn" onclick="print()">PDF</button></div>
+      </header>
+      <section class="grid section" id="dashboard">
+        <div class="panel"><div class="head"><h3>Upload document</h3><span class="badge" id="status">Aucun document</span></div><div class="body">
+          <label class="upload"><input id="file" type="file" accept=".txt,.pdf,.doc,.docx" hidden><span><b>Cliquez pour importer PDF, Word ou texte</b><br>Le texte collé fonctionne immédiatement.</span></label>
+          <textarea id="source" placeholder="Collez ici votre cours, mémoire, rapport, profil ou sujet..."></textarea><button class="btn" id="analyze">Analyser le contenu</button>
+          <div class="stats"><div class="stat"><b id="words">0</b><span>mots</span></div><div class="stat"><b id="keys">0</b><span>points clés</span></div><div class="stat"><b id="minutes">0</b><span>min lecture</span></div></div>
+        </div></div>
+        <div class="panel"><div class="head"><h3>Assistant IA global</h3><span class="badge">Études → Travail → Orientation</span></div><div class="body">
+          <div class="chat" id="chat"><p class="msg">Bonjour. Posez une question sur vos études, votre soutenance, votre CV ou votre orientation.</p></div><input id="ask" placeholder="Votre question..."><button class="btn" id="askBtn">Demander à l’assistant</button>
+        </div></div>
+      </section>
+      <section class="panel section hidden" id="studies"><div class="head"><h3>Module études</h3><span class="badge">Core</span></div><div class="body quick">
+        <button class="cardbtn" data-action="slides"><b>Générer PowerPoint</b><small>8 slides modernes</small></button><button class="cardbtn" data-action="quiz"><b>Créer QCM</b><small>Quiz interactif</small></button><button class="cardbtn" data-action="summary"><b>Résumer document</b><small>Court et détaillé</small></button><button class="cardbtn" data-action="exam"><b>Questions d’examen</b><small>Réponses modèles</small></button><button class="cardbtn" data-action="defense"><b>Préparer soutenance</b><small>Script et jury</small></button><button class="cardbtn" data-action="advice"><b>Recommandations</b><small>Amélioration</small></button>
+      </div></section>
+      <section class="panel section hidden" id="career"><div class="head"><h3>CV & carrière</h3><span class="badge">Travail</span></div><div class="body">
+        <input id="name" placeholder="Nom complet"><input id="role" placeholder="Poste visé"><textarea id="profile" placeholder="Formation, expériences, compétences, langues..."></textarea>
+        <div class="quick"><button class="cardbtn" data-action="cv"><b>CV automatique</b><small>Académique/pro</small></button><button class="cardbtn" data-action="letter"><b>Lettre de motivation</b><small>Personnalisée</small></button><button class="cardbtn" data-action="interview"><b>Simulation entretien</b><small>Questions + feedback</small></button></div>
+      </div></section>
+      <section class="panel section hidden" id="orientation"><div class="head"><h3>Orientation</h3><span class="badge">International</span></div><div class="body">
+        <input id="country" placeholder="Pays souhaité"><input id="budget" placeholder="Budget"><input id="field" placeholder="Domaine"><select id="level"><option>Licence</option><option>Master</option><option>Doctorat</option></select>
+        <div class="quick"><button class="cardbtn" data-action="jobs"><b>Métiers</b><small>Débouchés</small></button><button class="cardbtn" data-action="universities"><b>Universités</b><small>Admission + bourses</small></button><button class="cardbtn" data-action="path"><b>Plan d’action</b><small>90 jours</small></button></div>
+      </div></section>
+      <section class="panel section hidden" id="premium"><div class="head"><h3>Premium</h3><span class="badge">MVola / dépôt / mobile</span></div><div class="body"><ol><li>L’utilisateur paie.</li><li>Il envoie la preuve.</li><li>L’admin génère un code.</li><li>L’utilisateur active son compte.</li></ol><input id="code" placeholder="Code d’activation"><button class="btn" id="activate">Activer Premium</button></div></section>
+      <section class="panel printable"><div class="head"><h3>Résultat</h3></div><div class="body"><div class="result" id="result"><h4>Prêt à travailler</h4><p>Collez un contenu, puis cliquez sur une action.</p></div></div></section>
+    </main>
+  </div>
+  <script>
+    const $=id=>document.getElementById(id);let state={text:"",keys:[],quiz:[]};
+    function clean(v){return(v||"").replace(/\s+/g," ").trim()}function text(){return clean([$("source").value,$("profile").value,$("country").value,$("field").value].join(" "))||"Réussite académique, examens, soutenance, carrière et orientation internationale."}
+    function analyze(){state.text=text();let words=state.text.split(/\s+/).filter(Boolean),freq={},stop=new Set("avec dans pour plus moins cette votre vous nous ainsi comme etre avoir faire".split(" "));words.forEach(w=>{let raw=w.toLowerCase().replace(/^[ldjcmnts]'|^[ldjcmnts’]/,"").replace(/[^a-z0-9àâäéèêëîïôöùûüç-]/gi,""),key=raw.normalize("NFD").replace(/[\u0300-\u036f]/g,"");if(key.length>4&&!stop.has(key))freq[raw]=(freq[raw]||0)+1});state.keys=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,8).map(x=>x[0]);$("words").textContent=words.length;$("keys").textContent=state.keys.length;$("minutes").textContent=Math.max(1,Math.ceil(words.length/220));$("status").textContent="Document analysé";summary()}
+    function pts(){if(!state.keys.length)analyze();return state.keys.length?state.keys:["objectifs","méthodologie","résultats","recommandations"]}function title(){return(state.text||text()).split(/[.!?]/)[0].slice(0,90)}
+    function out(h){$("result").innerHTML=h}function summary(){let p=pts();out(`<h4>Résumé court</h4><p>${title()} : contenu structuré pour apprendre, réviser, soutenir ou valoriser un parcours.</p><h4>Résumé détaillé</h4><p>Les axes importants sont ${p.slice(0,4).join(", ")}. Le document peut être transformé en support d’étude, quiz, présentation et conseils pratiques.</p><h4>Points clés</h4><ul>${p.map(x=>`<li>${x} : notion importante à expliquer et mémoriser.</li>`).join("")}</ul>`)}
+    function slides(){let p=pts(),s=[["Titre",title()],["Introduction","Contexte, intérêt du sujet et annonce du plan."],["Problématique",`Comment exploiter efficacement ${p[0]} ?`],["Objectifs","Identifier les idées essentielles et produire une synthèse claire."],["Méthodologie","Analyse du document, extraction des points clés et reformulation."],["Résultats",`Les axes dominants sont ${p.slice(0,4).join(", ")}.`],["Conclusion","Le document donne une base solide pour réviser, présenter et agir."],["Recommandations","Ajouter des exemples, simplifier les messages et préparer les réponses."]];out(s.map(x=>`<article class="slide"><h4>${x[0]}</h4><p>${x[1]}</p></article>`).join(""))}
+    function quiz(){state.quiz=pts().slice(0,5).map(p=>({q:`Quelle affirmation décrit le mieux ${p} ?`,a:["Un point central à expliquer","Un détail à ignorer","Une contrainte sans rapport","Un élément uniquement administratif"],c:0,e:`${p} ressort comme un thème important.`}));out(state.quiz.map((q,i)=>`<div><b>Question ${i+1}. ${q.q}</b>${q.a.map((a,j)=>`<button class="choice" data-q="${i}" data-c="${j}">${String.fromCharCode(65+j)}. ${a}</button>`).join("")}<p id="e${i}"></p></div>`).join("")+`<p><b id="score">Score : 0 / ${state.quiz.length}</b></p>`)}
+    function exam(){out(`<h4>Questions probables d’examen</h4><ol>${pts().slice(0,6).map(p=>`<li>Expliquez le rôle de ${p}.</li>`).join("")}</ol><h4>Réponses modèles</h4><p>Définir la notion, donner un exemple, expliquer son impact, puis conclure.</p>`)}function defense(){out(`<h4>Script oral 5 minutes</h4><p>Bonjour, je présente : ${title()}. Je commence par le contexte, puis la problématique, les objectifs, la méthode, les résultats et les recommandations.</p><h4>Questions du jury</h4><ul><li>Pourquoi ce sujet ?</li><li>Quelle limite principale ?</li><li>Comment appliquer vos recommandations ?</li></ul>`)}
+    function career(t){let n=clean($("name").value)||"Nom Prénom",r=clean($("role").value)||"poste visé";if(t==="letter")out(`<h4>Lettre de motivation</h4><p>Madame, Monsieur, je souhaite présenter ma candidature pour ${r}. Mon parcours et mes compétences me permettent de contribuer avec sérieux et efficacité.</p><p>Cordialement,<br>${n}</p>`);else if(t==="interview")out(`<h4>Simulation entretien</h4><ol><li>Présentez-vous.</li><li>Pourquoi ce poste ?</li><li>Quelle réussite prouve votre sérieux ?</li></ol><p>Répondez avec Situation, Action, Résultat.</p>`);else out(`<h4>CV automatique</h4><p><b>${n}</b><br>${r}</p><h4>Profil</h4><p>Candidat motivé, organisé et orienté résultats.</p><h4>Compétences</h4><ul><li>Analyse</li><li>Communication</li><li>Organisation</li><li>Outils numériques</li></ul>`)}
+    function orient(t){let c=clean($("country").value)||"pays ciblé",f=clean($("field").value)||"domaine";if(t==="universities")out(`<h4>Universités adaptées</h4><ul><li>Université publique en ${c}</li><li>Université privée reconnue</li><li>Programme avec bourse</li></ul><p>Prévoir relevés, CV, lettre, passeport et preuve de langue.</p>`);else if(t==="jobs")out(`<h4>Métiers suggérés</h4><ul><li>Assistant de projet en ${f}</li><li>Analyste junior</li><li>Coordinateur académique</li></ul>`);else out(`<h4>Plan 90 jours</h4><ol><li>Choisir le domaine.</li><li>Comparer pays et budget.</li><li>Préparer dossier.</li><li>Candidater.</li></ol>`)}
+    document.querySelectorAll("[data-show]").forEach(b=>b.onclick=()=>{document.querySelectorAll(".section").forEach(s=>s.classList.add("hidden"));$(b.dataset.show).classList.remove("hidden");document.querySelectorAll(".nav").forEach(n=>n.classList.toggle("active",n===b))});$("analyze").onclick=analyze;
+    document.querySelectorAll("[data-action]").forEach(b=>b.onclick=()=>{analyze();let a=b.dataset.action;if(a==="slides")slides();else if(a==="quiz")quiz();else if(a==="summary")summary();else if(a==="exam")exam();else if(a==="defense")defense();else if(["cv","letter","interview"].includes(a))career(a);else if(["jobs","universities","path"].includes(a))orient(a);else out("<h4>Recommandations</h4><ul><li>Clarifier l’objectif.</li><li>Faire simple.</li><li>Ajouter des exemples.</li><li>Préparer les questions difficiles.</li></ul>")});
+    $("result").onclick=e=>{let b=e.target.closest(".choice");if(!b)return;let q=state.quiz[+b.dataset.q],ok=+b.dataset.c===q.c;b.classList.add(ok?"correct":"wrong");b.parentElement.querySelector(`[data-c="${q.c}"]`).classList.add("correct");$(`e${b.dataset.q}`).textContent=q.e;let score=document.querySelectorAll(".choice.correct[data-c='0']").length;$("score").textContent=`Score : ${score} / ${state.quiz.length}`};
+    $("askBtn").onclick=()=>{let q=clean($("ask").value);if(!q)return;$("chat").innerHTML+=`<p class="msg user">${q}</p><p class="msg">Conseil : commencez par ${pts()[0]}, structurez votre réponse, puis transformez-la en action concrète pour les études, le travail ou l’orientation.</p>`;$("ask").value=""};$("activate").onclick=()=>{if($("code").value.startsWith("MF-")){$("plan").textContent="Premium";alert("Compte Premium activé.")}else alert("Code invalide.")};
+    $("copy").onclick=()=>navigator.clipboard.writeText($("result").innerText);$("txt").onclick=()=>{let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([$("result").innerText],{type:"text/plain"}));a.download="memoirefacile-resultat.txt";a.click()};$("pptx").onclick=()=>{slides();alert("Les slides sont prêtes. Utilisez PDF pour exporter, ou copiez le contenu dans PowerPoint.")};
+    $("file").onchange=async e=>{let f=e.target.files[0];if(!f)return;$("source").value=f.name.endsWith(".txt")?await f.text():`Document importé : ${f.name}. Collez le texte extrait ici pour l’analyse complète.`;analyze()};
+  </script>
+</body>
+</html>
